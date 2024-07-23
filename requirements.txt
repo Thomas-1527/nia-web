@@ -12,7 +12,7 @@ jupyterlab
 scikit-learn
 pillow
 
-# Trick to install the version of Tensorflow depending on your processor: darwin == Mac, ARM == M1
+# TensorFlow
 tensorflow-macos==2.10.0; sys_platform == 'darwin' and 'ARM' in platform_version # Mac M-chips
 tensorflow==2.10.0; sys_platform == 'darwin' and 'ARM' not in platform_version # Mac Intel chips
 tensorflow==2.10.0; sys_platform != 'darwin' # Windows & Ubuntu Intel chips
@@ -25,12 +25,11 @@ darknet
 fastapi==0.108.0
 uvicorn
 streamlit
-streamlit_webrtc
+streamlit-webrtc
 python-multipart
 
 # Managing .env file lib
 python-dotenv
-
 
 # OpenAI
 openai
