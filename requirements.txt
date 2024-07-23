@@ -1,41 +1,17 @@
-# Basic libs
 numpy==1.21.6
 pandas
 matplotlib
 seaborn
-
-# Le Wagon libs
 pytest
 pylint
 ipdb
 jupyterlab
 scikit-learn
 pillow
-
-# TensorFlow
-tensorflow-macos==2.10.0; sys_platform == 'darwin' and 'ARM' in platform_version # Mac M-chips
-tensorflow==2.10.0; sys_platform == 'darwin' and 'ARM' not in platform_version # Mac Intel chips
-tensorflow==2.10.0; sys_platform != 'darwin' # Windows & Ubuntu Intel chips
-
-# Project specific libs
+tensorflow==2.10.0
 opencv-python
-darknet
-
-# API
+streamlit
+streamlit_webrtc
 fastapi==0.108.0
 uvicorn
-streamlit
-streamlit-webrtc
 python-multipart
-
-# Managing .env file lib
-python-dotenv
-
-# OpenAI
-openai
-
-# Logos lib
-colorama
-
-# Google storage
-google-cloud-storage
