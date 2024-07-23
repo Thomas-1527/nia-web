@@ -2,3 +2,6 @@ streamlit
 requests
 Pillow
 opencv-python
+streamlit-webrtc
+numpy
+requests
