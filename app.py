@@ -50,8 +50,7 @@ def process_uploaded_video(uploaded_video):
         if not ret:
             break
 
-        resized_frame = cv2.resize(frame, (320, 240))  # Réduire la résolution pour améliorer les performances
-        _, img_encoded = cv2.imencode('.jpg', resized_frame)
+        _, img_encoded = cv2.imencode('.jpg', frame)
         response = requests.post(API_URL, files={"file": img_encoded.tobytes()})
         result = response.json()
 
