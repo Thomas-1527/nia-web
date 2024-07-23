@@ -1,25 +1,46 @@
 import streamlit as st
 import requests
+import cv2
+import tempfile
+import numpy as np
+from PIL import Image
 
-# URL de l'API FastAPI
-api_url = "http://127.0.0.1:8000/"
+# URL de l'API
+API_URL = "http://127.0.0.1:8000/predict"
 
 st.title("Détection des Yeux et Prédiction de Fatigue")
-st.subheader("Flux en Direct de la Webcam ou Télécharger une Vidéo")
 
-# Fonction pour faire une requête à l'API
-def get_api_message():
-    try:
-        response = requests.get(api_url)
+# Téléchargement de vidéo
+uploaded_video = st.file_uploader("Upload a video", type=["mp4", "avi", "mov"])
+
+if uploaded_video is not None:
+    tfile = tempfile.NamedTemporaryFile(delete=False)
+    tfile.write(uploaded_video.read())
+
+    # Charger la vidéo avec OpenCV
+    cap = cv2.VideoCapture(tfile.name)
+    stframe = st.empty()
+
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        # Convertir le cadre en image
+        is_success, im_buf_arr = cv2.imencode(".jpg", frame)
+        byte_im = im_buf_arr.tobytes()
+
+        # Envoyer le cadre à l'API pour prédiction
+        response = requests.post(API_URL, files={"file": byte_im})
+
         if response.status_code == 200:
-            return response.json()
-        else:
-            return {"message": "Erreur lors de la requête à l'API"}
-    except Exception as e:
-        return {"message": f"Exception lors de la requête à l'API: {e}"}
+            data = response.json()
+            if data["eye_state"] == "closed":
+                cv2.putText(frame, "Eyes Closed", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+            else:
+                cv2.putText(frame, "Eyes Open", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
 
-# Afficher le message de l'API
-api_response = get_api_message()
-st.write(api_response["message"])
+        # Afficher le cadre avec les annotations
+        stframe.image(frame, channels="BGR")
 
-# Vous pouvez ajouter plus de logique ici pour traiter les vidéos et afficher les prédictions
+    cap.release()
