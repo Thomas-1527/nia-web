@@ -9,7 +9,7 @@ from PIL import Image
 import base64
 
 # Définir l'URL de l'API
-API_URL = "https://nia-i5tlpsxovq-ew.a.run.app"
+API_URL = "https://nia-i5tlpsxovq-ew.a.run.app/predict"
 
 # Classe pour la transformation vidéo en direct
 class VideoTransformer(VideoTransformerBase):
